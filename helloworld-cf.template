@@ -43,13 +43,13 @@
                 "GroupDescription": "Allow SSH and TCP/3000 access",
                 "SecurityGroupIngress": [
                     {
-                        "CidrIp": "5.66.79.10/32",
+                        "CidrIp": "86.187.172.9/32",
                         "FromPort": "22",
                         "IpProtocol": "tcp",
                         "ToPort": "22"
                     },
                     {
-                        "CidrIp": "5.66.79.10/32",
+                        "CidrIp": "86.187.172.9/32",
                         "FromPort": "3000",
                         "IpProtocol": "tcp",
                         "ToPort": "3000"
@@ -60,7 +60,7 @@
         },
         "instance": {
             "Properties": {
-                "ImageId": "ami-466768ac",
+                "ImageId": "ami-e4515e0e",
                 "InstanceType": "t2.micro",
                 "KeyName": {
                     "Ref": "KeyPair"

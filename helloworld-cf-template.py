@@ -13,6 +13,10 @@ from troposphere import (
 
 ApplicationPort = "3000"
 
+myIP = "86.187.172.9/32"
+
+AMI_image = "ami-e4515e0e"
+
 t = Template()
 
 t.add_description("Effective DevOps in AWS: HelloWorld web application")
@@ -32,13 +36,13 @@ t.add_resource(ec2.SecurityGroup(
             IpProtocol="tcp",
             FromPort="22",
             ToPort="22",
-            CidrIp="5.66.79.10/32",
+            CidrIp=myIP,
         ),
         ec2.SecurityGroupRule(
             IpProtocol="tcp",
             FromPort=ApplicationPort,
             ToPort=ApplicationPort,
-            CidrIp="5.66.79.10/32",
+            CidrIp=myIP,
         ),
     ],
 ))
@@ -53,7 +57,7 @@ ud = Base64(Join('\n', [
 
 t.add_resource(ec2.Instance(
     "instance",
-    ImageId="ami-466768ac",
+    ImageId=AMI_image,
     InstanceType="t2.micro",
     SecurityGroups=[Ref("SecurityGroup")],
     KeyName=Ref("KeyPair"),
