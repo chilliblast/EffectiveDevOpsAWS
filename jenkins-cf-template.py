@@ -14,13 +14,13 @@ from troposphere import (
     Template,
 )
 
-from troposphere import (
+from troposphere.iam import (
     InstanceProfile,
     PolicyType as IAMPolicy,
     Role,
 )
 
-from awacs import (
+from awacs.aws import (
     Action,
     Allow,
     Policy,
@@ -74,9 +74,10 @@ t.add_resource(ec2.SecurityGroup(
 ud = Base64(Join('\n', [
   "#!/bin/bash",
   "yum install --enablerepo=epel -y git",
+  "pip install --upgrade pip",
   "pip install ansible",
   AnsiblePullCmd,
-  "echo '*/10 * * * * {}' > /etc/cron.d/ansible.pull".format(AnsiblePullCmd)
+  "echo '*/10 * * * root {}' > /etc/cron.d/ansible.pull".format(AnsiblePullCmd)
 ]))
 
 t.add_resource(ec2.Instance(
