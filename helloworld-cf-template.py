@@ -1,5 +1,8 @@
 """Generating CloudFormation template."""
 
+from ipaddress import ip_network
+from ipify import get_ip
+
 from troposphere import (
     Base64,
     ec2,
@@ -13,7 +16,7 @@ from troposphere import (
 
 ApplicationPort = "3000"
 
-myIP = "86.187.172.9/32"
+myIP = str(ip_network(get_ip()))
 
 AMI_image = "ami-e4515e0e"
 
