@@ -74,7 +74,7 @@ t.add_resource(ec2.SecurityGroup(
 ud = Base64(Join('\n', [
   "#!/bin/bash",
   "yum install --enablerepo=epel -y git",
-  "ln -s /usr/local/bin/pip pip",
+  "ln -s /usr/local/bin/pip /usr/bin/pip",
   "pip install --upgrade pip",
   "pip install ansible",
   AnsiblePullCmd,
