@@ -73,6 +73,7 @@ t.add_resource(ec2.SecurityGroup(
 ))
 ud = Base64(Join('\n', [
   "#!/bin/bash",
+  "yum update -y",
   "yum install --enablerepo=epel -y git",
   "pip install --upgrade pip",
   "ln -s /usr/local/bin/pip /usr/bin/pip",
