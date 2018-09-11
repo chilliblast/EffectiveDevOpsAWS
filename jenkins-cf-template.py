@@ -34,7 +34,7 @@ ApplicatioName = "jenkins"
 ApplicationPort = "8080"
 
 GithubAccount = "chilliblast"
-GithubAnsibleURL = "https://github.com/{}/Ansible".format(GithubAccount)
+GithubAnsibleURL = "https://github.com/{}/ansible".format(GithubAccount)
 
 AnsiblePullCmd = "/usr/local/bin/ansible-pull -U {} {}.yml -i localhost".format(GithubAnsibleURL,ApplicatioName)
 
@@ -74,10 +74,24 @@ t.add_resource(ec2.SecurityGroup(
 ud = Base64(Join('\n', [
   "#!/bin/bash",
   "yum install --enablerepo=epel -y git",
+  "pip install --upgrade pip",
+  "ln -s /usr/local/bin/pip /usr/bin/pip",
   "pip install ansible",
   AnsiblePullCmd,
   "echo '*/10 * * * * root {}' > /etc/cron.d/ansible.pull".format(AnsiblePullCmd)
 ]))
+
+t.add_resource(IAMPolicy("Policy", 
+    PolicyName="AllowCodePipeline", 
+    PolicyDocument=Policy( 
+        Statement=[ 
+            Statement(Effect=Allow, 
+                Action=[Action("codepipeline", "*")], 
+                Resource=["*"]) 
+        ] 
+    ), 
+    Roles=[Ref("Role")] 
+)) 
 
 t.add_resource(ec2.Instance(
     "instance",
@@ -87,21 +101,6 @@ t.add_resource(ec2.Instance(
     KeyName=Ref("KeyPair"),
     UserData=ud,
     IamInstanceProfile=Ref("InstanceProfile"),
-))
-
-t.add_resource(IAMPolicy(
-    "Policy",
-    PolicyName="AllowCodePipeline",
-    PolicyDocument=Policy(
-        Statement=[
-            Statement(
-                Effect=Allow,
-                Action=[Action("codepipeline", "*")],
-                Resource=["*"]
-            )
-        ]
-    ),
-    Roles=[Ref("Role")]
 ))
 
 t.add_resource(Role(
@@ -138,4 +137,4 @@ t.add_output(Output(
     ]),
 ))
 
-print t.to_json()
+print (t.to_json())

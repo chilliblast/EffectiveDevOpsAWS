@@ -49,6 +49,30 @@
             },
             "Type": "AWS::IAM::InstanceProfile"
         },
+        "Policy": {
+            "Properties": {
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "codepipeline:*"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": [
+                                "*"
+                            ]
+                        }
+                    ]
+                },
+                "PolicyName": "AllowCodePipeline",
+                "Roles": [
+                    {
+                        "Ref": "Role"
+                    }
+                ]
+            },
+            "Type": "AWS::IAM::Policy"
+        },
         "Role": {
             "Properties": {
                 "AssumeRolePolicyDocument": {
@@ -74,13 +98,13 @@
                 "GroupDescription": "Allow SSH and TCP/8080 access",
                 "SecurityGroupIngress": [
                     {
-                        "CidrIp": "86.187.174.84/32",
+                        "CidrIp": "34.240.100.91/32",
                         "FromPort": "22",
                         "IpProtocol": "tcp",
                         "ToPort": "22"
                     },
                     {
-                        "CidrIp": "86.187.174.84/32",
+                        "CidrIp": "34.240.100.91/32",
                         "FromPort": "8080",
                         "IpProtocol": "tcp",
                         "ToPort": "8080"
@@ -111,11 +135,11 @@
                             [
                                 "#!/bin/bash",
                                 "yum install --enablerepo=epel -y git",
-                                "ln -s /usr/local/bin/pip pip",
                                 "pip install --upgrade pip",
+                                "ln -s /usr/local/bin/pip /usr/bin/pip",
                                 "pip install ansible",
-                                "/usr/local/bin/ansible-pull -U https://github.com/chilliblast/Ansible jenkins.yml -i localhost",
-                                "echo '*/10 * * * * root /usr/local/bin/ansible-pull -U https://github.com/chilliblast/Ansible jenkins.yml -i localhost' > /etc/cron.d/ansible.pull"
+                                "/usr/local/bin/ansible-pull -U https://github.com/chilliblast/ansible jenkins.yml -i localhost",
+                                "echo '*/10 * * * * root /usr/local/bin/ansible-pull -U https://github.com/chilliblast/ansible jenkins.yml -i localhost' > /etc/cron.d/ansible.pull"
                             ]
                         ]
                     }

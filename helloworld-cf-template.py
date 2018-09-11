@@ -1,6 +1,6 @@
 """Generating CloudFormation template."""
-
 from ipaddress import ip_network
+
 from ipify import get_ip
 
 from troposphere import (
@@ -15,10 +15,7 @@ from troposphere import (
 )
 
 ApplicationPort = "3000"
-
-myIP = str(ip_network(get_ip()))
-
-AMI_image = "ami-e4515e0e"
+PublicCidrIp = str(ip_network(get_ip()))
 
 t = Template()
 
@@ -39,13 +36,13 @@ t.add_resource(ec2.SecurityGroup(
             IpProtocol="tcp",
             FromPort="22",
             ToPort="22",
-            CidrIp=myIP,
+            CidrIp="0.0.0.0/0",
         ),
         ec2.SecurityGroupRule(
             IpProtocol="tcp",
             FromPort=ApplicationPort,
             ToPort=ApplicationPort,
-            CidrIp=myIP,
+            CidrIp="0.0.0.0/0",
         ),
     ],
 ))
@@ -60,7 +57,7 @@ ud = Base64(Join('\n', [
 
 t.add_resource(ec2.Instance(
     "instance",
-    ImageId=AMI_image,
+    ImageId="ami-047bb4163c506cd98",
     InstanceType="t2.micro",
     SecurityGroups=[Ref("SecurityGroup")],
     KeyName=Ref("KeyPair"),
@@ -82,4 +79,4 @@ t.add_output(Output(
     ]),
 ))
 
-print t.to_json()
+print (t.to_json())

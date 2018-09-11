@@ -34,7 +34,7 @@ ApplicatioName = "nodeserver"
 ApplicationPort = "3000"
 
 GithubAccount = "chilliblast"
-GithubAnsibleURL = "https://github.com/{}/Ansible".format(GithubAccount)
+GithubAnsibleURL = "https://github.com/{}/ansible".format(GithubAccount)
 
 AnsiblePullCmd = "/usr/local/bin/ansible-pull -U {} {}.yml -i localhost".format(GithubAnsibleURL,ApplicatioName)
 
@@ -73,7 +73,6 @@ t.add_resource(ec2.SecurityGroup(
 ))
 ud = Base64(Join('\n', [
   "#!/bin/bash",
-  "yum update -y",
   "yum install --enablerepo=epel -y git",
   "pip install --upgrade pip",
   "ln -s /usr/local/bin/pip /usr/bin/pip",
@@ -140,4 +139,4 @@ t.add_output(Output(
     ]),
 ))
 
-print t.to_json()
+print (t.to_json())
