@@ -4,15 +4,12 @@ from ipaddress import ip_network
 from ipify import get_ip
 
 from troposphere import (
-    Alarm,
-    AutoScalingGroup,
-    LaunchConfiguration,
-    ScalingPolicy, 
+    autoscaling,
     Base64,
+    cloudwatch,
     ec2,
     GetAtt,
     Join,
-    MetricDimension,
     Output,
     Parameter,
     Ref,
@@ -24,6 +21,17 @@ from troposphere.iam import (
     InstanceProfile,
     PolicyType as IAMPolicy,
     Role,
+)
+
+from troposphere.autoscaling import (
+    AutoScalingGroup,
+    LaunchConfiguration,
+    ScalingPolicy,
+)
+
+from troposphere.cloudwatch import (
+    Alarm,
+    MetricDimension,
 )
 
 from awacs.aws import (
@@ -96,7 +104,7 @@ t.add_parameter(Parameter(
 t.add_resource(ec2.SecurityGroup( 
     "LoadBalancerSecurityGroup", 
     GroupDescription="Web load balancer security group.", 
-    VpcId=Ref("VpcId"), 
+    VpcId=Ref("VpcId"),
     SecurityGroupIngress=[ 
         ec2.SecurityGroupRule( 
             IpProtocol="tcp", 
@@ -137,8 +145,8 @@ t.add_resource(elb.LoadBalancer(
 t.add_resource(ec2.SecurityGroup(
     "SecurityGroup",
     GroupDescription="Allow SSH and TCP/{} access".format(ApplicationPort),
-    SecurityGroupIngress=[
     VpcId=Ref("VpcId"),
+    SecurityGroupIngress=[
         ec2.SecurityGroupRule(
             IpProtocol="tcp",
             FromPort="22",
