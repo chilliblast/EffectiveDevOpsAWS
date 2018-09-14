@@ -91,7 +91,7 @@ t.add_output(Output(
     "TargetGroup", 
     Description="TargetGroup", 
     Value=Ref("TargetGroup"), 
-    Export=Export(Sub("${AWS::StackName}-target-group")), 
+    Export=Export(Sub("${AWS::StackName}-helloworld-target-group")), 
 )) 
  
 t.add_output(Output( 
