@@ -14,7 +14,7 @@ from troposphere import (
 )
 from troposphere.codepipeline import (
     Actions,
-    ActionTypeID,
+    ActionTypeId,
     ArtifactStore,
     InputArtifacts,
     OutputArtifacts,
@@ -109,7 +109,7 @@ t.add_resource(Pipeline(
             Actions=[
                 Actions(
                     Name="Source",
-                    ActionTypeId=ActionTypeID(
+                    ActionTypeId=ActionTypeId(
                         Category="Source",
                         Owner="ThirdParty",
                         Version="1",
@@ -134,7 +134,7 @@ t.add_resource(Pipeline(
             Actions=[
                 Actions(
                     Name="Container",
-                    ActionTypeId=ActionTypeID(
+                    ActionTypeId=ActionTypeId(
                         Category="Build",
                         Owner="AWS",
                         Version="1",
@@ -161,7 +161,7 @@ t.add_resource(Pipeline(
             Actions=[
                 Actions(
                     Name="Deploy",
-                    ActionTypeId=ActionTypeID(
+                    ActionTypeId=ActionTypeId(
                         Category="Deploy",
                         Owner="AWS",
                         Version="1",
@@ -192,7 +192,7 @@ t.add_resource(Pipeline(
             Actions=[
                 Actions(
                     Name="Approval",
-                    ActionTypeId=ActionTypeID(
+                    ActionTypeId=ActionTypeId(
                         Category="Approval",
                         Owner="AWS",
                         Version="1",
@@ -208,7 +208,7 @@ t.add_resource(Pipeline(
             Actions=[
                 Actions(
                     Name="Deploy",
-                    ActionTypeId=ActionTypeID(
+                    ActionTypeId=ActionTypeId(
                         Category="Deploy",
                         Owner="AWS",
                         Version="1",
